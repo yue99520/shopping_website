@@ -4,10 +4,9 @@ namespace Tests\Unit;
 
 use App\Commodity;
 use App\Shop;
-use App\User;
 use Tests\TestCase;
 
-class ShopTest extends TestCase
+class ShopModuleTest extends TestCase
 {
     public function testShopHasCommodities()
     {
