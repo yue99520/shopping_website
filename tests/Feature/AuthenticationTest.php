@@ -13,15 +13,10 @@ class AuthenticationTest extends TestCase
     {
         $response = $this
             ->json('POST', route('login'), [
-                'email' => 'test@gmail.com',
-                'password' => 'test12345',
+                'email' => 'admin@gmail.com',
+                'password' => 'admin12345',
             ]);
-
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'msg' => 'ok',
-            ]);
+        $response->assertStatus(204);
 
         $this->assertAuthenticated();
     }
@@ -31,11 +26,7 @@ class AuthenticationTest extends TestCase
         $response = $this
             ->json('POST', route('logout'), []);
 
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                'msg' => 'ok',
-            ]);
+        $response->assertStatus(204);
 
         $this->assertGuest();
     }
