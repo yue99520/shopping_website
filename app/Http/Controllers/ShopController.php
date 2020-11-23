@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\ErrorResponses\ResourceAlreadyExistError;
+use App\Http\ErrorResponses\ResourceNotFoundError;
 use App\Http\Requests\Shop\StoreShopRequest;
 use App\Http\Requests\Shop\UpdateShopRequest;
 use App\Shop;
@@ -50,7 +52,7 @@ class ShopController extends Controller
         $is_exist = Shop::query()->where('user_id', $user_id)->exists();
 
         if ($is_exist) {
-            return response('Resource already exists.', 400);
+            return ResourceAlreadyExistError::response();
         }
 
         $shop = new Shop();
@@ -73,7 +75,7 @@ class ShopController extends Controller
         $shop = Shop::query()->where('user_id', $user_id)->find($id);
 
         if ($shop == null) {
-            return response('Resource not found', 400);
+            return ResourceNotFoundError::response();
         }
 
         return response()->json($shop);
@@ -104,7 +106,7 @@ class ShopController extends Controller
 
         $shop = Shop::query()->where('user_id', $user_id)->find($id);
         if ($shop == null) {
-            return response('Resource not found', 400);
+            return ResourceNotFoundError::response();
         }
 
         $shop->title = $data['title'];
@@ -126,7 +128,7 @@ class ShopController extends Controller
             ->find($id);
 
         if ($shop == null) {
-            return response('Resource not found', 400);
+            return ResourceNotFoundError::response();
         }
 
         $shop->delete();
