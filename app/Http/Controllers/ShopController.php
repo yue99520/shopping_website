@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\ShopAlreadyCreatedException;
 use App\Http\Requests\Shop\StoreShopRequest;
+use App\Http\Requests\Shop\UpdateShopRequest;
 use App\Shop;
 use App\User;
 use Illuminate\Contracts\Foundation\Application;
@@ -47,10 +47,10 @@ class ShopController extends Controller
 
         $user_id = Auth::id();
 
-        if (User::query()->find($user_id)->shop != null) {
-            return response()->json([
-                'msg' => 'Your shop has been created before.',
-            ]);
+        $is_exist = Shop::query()->where('user_id', $user_id)->exists();
+
+        if ($is_exist) {
+            return response('Resource already exists.', 400);
         }
 
         $shop = new Shop();
@@ -65,11 +65,18 @@ class ShopController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return Application|ResponseFactory|JsonResponse|Response
      */
     public function show($id)
     {
-        //
+        $user_id = Auth::id();
+        $shop = Shop::query()->where('user_id', $user_id)->find($id);
+
+        if ($shop == null) {
+            return response('Resource not found', 400);
+        }
+
+        return response()->json($shop);
     }
 
     /**
@@ -86,23 +93,45 @@ class ShopController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param UpdateShopRequest $request
+     * @param int $id
+     * @return Application|ResponseFactory|JsonResponse|Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateShopRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+        $user_id = Auth::id();
+
+        $shop = Shop::query()->where('user_id', $user_id)->find($id);
+        if ($shop == null) {
+            return response('Resource not found', 400);
+        }
+
+        $shop->title = $data['title'];
+        $shop->save();
+        return response()->json($shop->toArray());
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return Application|ResponseFactory|JsonResponse|Response
      */
     public function destroy($id)
     {
-        //
+        $user_id = Auth::id();
+        $shop = Shop::query()
+            ->where('user_id', $user_id)
+            ->find($id);
+
+        if ($shop == null) {
+            return response('Resource not found', 400);
+        }
+
+        $shop->delete();
+        return response()->json([
+            'msg' => 'ok'
+        ]);
     }
 }
