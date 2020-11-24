@@ -1,5 +1,17 @@
 require('./bootstrap');
 
+function showErrorMessage(message_id, header, content) {
+    let message = $('#' + message_id + '.ui.negative.message');
+    message.find('div').text(header);
+    message.find('p').text(content);
+    message.removeAttr('hidden');
+}
+
+function getFormFieldValue(field_id) {
+    //semantic ui api
+    return $('.ui.form').form('get field', field_id).val();
+}
+
 $(document).ready(function () {
     $('.ui.dropdown')
         .dropdown()
@@ -15,6 +27,35 @@ $(document).ready(function () {
             }
         }).then(function () {
             window.location = root
+        });
+    });
+
+    $("#login_form").submit(function(e) {
+        e.preventDefault();
+        let csrfToken = $('input[name="_token"]').attr('value');
+        let email = getFormFieldValue('email');
+        let password = getFormFieldValue('password');
+        let root = $('meta[name="url"]').attr('content');
+        fetch(root + '/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                'email': email,
+                'password': password,
+            }),
+            headers: {
+                'X-CSRF_TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(function (response) {
+            if (response.status === 204) {
+                window.location = root;
+            } else if (response.status === 422){
+                showErrorMessage(
+                    'login_error',
+                    'Login fail',
+                    'Wrong email or password.')
+            }
         });
     });
 });
