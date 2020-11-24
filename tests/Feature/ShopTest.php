@@ -120,8 +120,6 @@ class ShopTest extends TestCase
         $shop = factory(Shop::class)->create();
         $shop->save();
         $shop->refresh();
-        $user = $shop->user;
-        $this->actingAs($user);
 
         //show a shop
         $response = $this->get(route('shop.show', [
@@ -144,5 +142,18 @@ class ShopTest extends TestCase
         ]));
         $response->assertStatus(400);
         $this->assertEquals('Resource not found', $response->getContent());
+    }
+
+    public function testCanIndexShops()
+    {
+        $amount = 10;
+        $shops = factory(Shop::class, $amount)->create();
+        foreach ($shops as $shop) {
+            $shop->save();
+        }
+
+        $response = $this->get(route('shop.index'));
+
+        $this->assertCount($amount, $response->json());
     }
 }

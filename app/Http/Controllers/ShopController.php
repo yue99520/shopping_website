@@ -20,11 +20,12 @@ class ShopController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function index()
     {
-        //
+        $shops = Shop::query()->get();
+        return response()->json($shops);
     }
 
     /**
@@ -71,8 +72,7 @@ class ShopController extends Controller
      */
     public function show($id)
     {
-        $user_id = Auth::id();
-        $shop = Shop::query()->where('user_id', $user_id)->find($id);
+        $shop = Shop::query()->find($id);
 
         if ($shop == null) {
             return ResourceNotFoundError::response();
