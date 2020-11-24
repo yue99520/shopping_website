@@ -54,7 +54,40 @@ $(document).ready(function () {
                 showErrorMessage(
                     'login_error',
                     'Login fail',
-                    'Wrong email or password.')
+                    'Invalid email or password.')
+            }
+        });
+    });
+
+    $("#register_form").submit(function(e) {
+        e.preventDefault();
+        let csrfToken = $('input[name="_token"]').attr('value');
+        let name = getFormFieldValue('name');
+        let email = getFormFieldValue('email');
+        let password = getFormFieldValue('password');
+        let password_confirmation = getFormFieldValue('password_confirmation');
+        let root = $('meta[name="url"]').attr('content');
+        fetch(root + '/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                'name': name,
+                'email': email,
+                'password': password,
+                'password_confirmation': password_confirmation,
+            }),
+            headers: {
+                'X-CSRF_TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(function (response) {
+            if (response.status === 204) {
+                window.location = root;
+            } else if (response.status === 422){
+                showErrorMessage(
+                    'register_error',
+                    'Register fail',
+                    'Invalid input content.')
             }
         });
     });

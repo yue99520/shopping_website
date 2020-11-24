@@ -3,12 +3,9 @@
 @section('content')
     <div class="ui two column centered grid">
         <div class="column">
-            <div id="login_error" class="ui negative message" hidden>
-                <div class="header">
-                    We're sorry we can't apply that discount
-                </div>
-                <p>That offer has expired
-            </div>
+            @component('component.error_message')
+                login_error
+            @endcomponent
             <div class="ui segments">
                 <div class="ui blue segment big header">
                     Login

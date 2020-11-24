@@ -3,12 +3,15 @@
 @section('content')
     <div class="ui two column centered grid">
         <div class="column">
+            @component('component.error_message')
+                register_error
+            @endcomponent
             <div class="ui segments">
                 <div class="ui green segment big header">
                     Register
                 </div>
                 <div class="ui secondary segment">
-                    <form class="ui form" action="{{ route('register') }}" method="post">
+                    <form id="register_form" class="ui form">
                         @csrf
                         <div class="field">
                             <label>Username</label>
