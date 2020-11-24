@@ -49,7 +49,7 @@ $(document).ready(function () {
             }
         }).then(function (response) {
             if (response.status === 204) {
-                window.location = root;
+                // window.location = root;
             } else if (response.status === 422){
                 showErrorMessage(
                     'login_error',
@@ -67,7 +67,7 @@ $(document).ready(function () {
         let password = getFormFieldValue('password');
         let password_confirmation = getFormFieldValue('password_confirmation');
         let root = $('meta[name="url"]').attr('content');
-        fetch(root + '/login', {
+        fetch(root + '/register', {
             method: 'POST',
             body: JSON.stringify({
                 'name': name,
@@ -82,7 +82,7 @@ $(document).ready(function () {
             }
         }).then(function (response) {
             if (response.status === 204) {
-                window.location = root;
+                // window.location = root;
             } else if (response.status === 422){
                 showErrorMessage(
                     'register_error',
