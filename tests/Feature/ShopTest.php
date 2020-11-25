@@ -156,4 +156,44 @@ class ShopTest extends TestCase
 
         $this->assertCount($amount, $response->json());
     }
+
+    public function testCannotUpdateWhileIsAGuest()
+    {
+        $shop = factory(Shop::class)->create();
+        $shop->save();
+
+        $response = $this->patch(route('shop.update', [
+            'shop' => $shop->id
+        ]), [
+            'title' => 'updated'
+        ], [
+            'Accept' => 'application/json'
+        ]);
+        $response->assertStatus(401);
+    }
+
+    public function testCannotDestroyWhileIsAGuest()
+    {
+        $shop = factory(Shop::class)->create();
+        $shop->save();
+
+        $response = $this->patch(route('shop.destroy', [
+            'shop' => $shop->id
+        ]), [], [
+            'Accept' => 'application/json'
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    public function testCannotStoreWhileIsAGuest()
+    {
+        $response = $this->post(route('shop.store'), [
+            'title' => 'test'
+        ], [
+            'Accept' => 'application/json'
+        ]);
+
+        $response->assertStatus(401);
+    }
 }
