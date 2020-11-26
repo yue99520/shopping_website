@@ -6,7 +6,7 @@ use App\Commodity;
 use App\Shop;
 use Tests\TestCase;
 
-class ShopModuleTest extends TestCase
+class ShopModelTest extends TestCase
 {
     public function testShopHasCommodities()
     {
