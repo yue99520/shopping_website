@@ -3,7 +3,7 @@
 @section('content')
     <div class="ui two column centered grid">
         <div class="column">
-            @component('component.error_message')
+            @component('messages.error')
                 login_error
             @endcomponent
             <div class="ui segments">

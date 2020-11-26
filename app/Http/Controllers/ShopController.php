@@ -10,10 +10,12 @@ use App\Shop;
 use App\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class ShopController extends Controller
 {
@@ -30,12 +32,12 @@ class ShopController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return Application|Factory|JsonResponse|View
      */
     public function index()
     {
         $shops = Shop::query()->get();
-        return response()->json($shops);
+        return view('shop.list.index', ['shops' => $shops]);
     }
 
     /**

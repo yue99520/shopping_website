@@ -144,19 +144,6 @@ class ShopTest extends TestCase
         $this->assertEquals('Resource not found', $response->getContent());
     }
 
-    public function testCanIndexShops()
-    {
-        $amount = 10;
-        $shops = factory(Shop::class, $amount)->create();
-        foreach ($shops as $shop) {
-            $shop->save();
-        }
-
-        $response = $this->get(route('shop.index'));
-
-        $this->assertCount($amount, $response->json());
-    }
-
     public function testCannotUpdateWhileIsAGuest()
     {
         $shop = factory(Shop::class)->create();
