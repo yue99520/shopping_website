@@ -16,8 +16,10 @@ class ShopTest extends TestCase
         $this->assertDatabaseHas('users', $user->toArray());
 
         $title = 'My test shop name 123';
+        $description = 'some description thing';
         $response = $this->post(route('shop.store'), [
             'title' => $title,
+            'description' => $description,
         ]);
 
         $shop = Shop::query()->where('title', $title)->first();
@@ -34,9 +36,11 @@ class ShopTest extends TestCase
         $user = $shop->user;
         $this->actingAs($user);
 
-        //shop is created
+        $title = 'abcd1234';
+        $description = 'some description thing';
         $response = $this->post(route('shop.store'), [
-            'title' => 'abcd1234',
+            'title' => $title,
+            'description' => $description,
         ]);
         $response->assertStatus(400);
         $this->assertEquals('Resource already exists.', $response->getContent());

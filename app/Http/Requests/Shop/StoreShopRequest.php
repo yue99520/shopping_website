@@ -24,7 +24,8 @@ class StoreShopRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'unique:shops,title']
+            'title' => ['required', 'unique:shops,title'],
+            'description' => ['required']
         ];
     }
 }

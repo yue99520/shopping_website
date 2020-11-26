@@ -16,6 +16,7 @@ class ShopSeeder extends Seeder
         $now = Carbon::now();
         DB::table('shops')->insert([
             'title' => 'Official Shop 1',
+            'description' => 'some description',
             'user_id' => 1,
             'created_at' => $now,
             'updated_at' => $now,
@@ -23,6 +24,7 @@ class ShopSeeder extends Seeder
 
         DB::table('shops')->insert([
             'title' => 'Official Shop 2',
+            'description' => 'some description',
             'user_id' => 1,
             'created_at' => $now,
             'updated_at' => $now,
@@ -30,6 +32,7 @@ class ShopSeeder extends Seeder
 
         DB::table('shops')->insert([
             'title' => 'Official Shop 3',
+            'description' => 'some description',
             'user_id' => 1,
             'created_at' => $now,
             'updated_at' => $now,

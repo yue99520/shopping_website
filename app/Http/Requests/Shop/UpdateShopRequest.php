@@ -24,7 +24,8 @@ class UpdateShopRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'unique:shops,title']
+            'title' => ['unique:shops,title'],
+            'description' => []
         ];
     }
 }

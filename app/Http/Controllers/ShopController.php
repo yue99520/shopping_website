@@ -71,6 +71,7 @@ class ShopController extends Controller
         $shop = new Shop();
         $shop->user_id = $user_id;
         $shop->title = $data['title'];
+        $shop->description = $data['description'];
         $shop->save();
 
         return response()->json($shop);
@@ -121,7 +122,13 @@ class ShopController extends Controller
             return ResourceNotFoundError::response();
         }
 
-        $shop->title = $data['title'];
+        if (isset($data['title'])) {
+            $shop->title = $data['title'];
+        }
+
+        if (isset($data['description'])) {
+            $shop->description = $data['description'];
+        }
         $shop->save();
         return response()->json($shop->toArray());
     }

@@ -5,10 +5,10 @@
     <div class="content">
         <a class="header">{{ $shop->title }}</a>
         <div class="meta">
-            <span>Description</span>
+            <span>something here</span>
         </div>
         <div class="description">
-            <p>test content</p>
+            <p>{{ $shop->description }}</p>
         </div>
         <div class="extra">
             Total {{ $shop->commodities()->get()->count() }} commodities
