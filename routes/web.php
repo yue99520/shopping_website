@@ -21,8 +21,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/shop/dashboard', 'ShopController@dashboard')->name('shop.dashboard');
 
 Route::resources([
     'shop' => 'ShopController',
     'commodity' => 'CommodityController',
 ]);
+

@@ -26,6 +26,7 @@ class ShopController extends Controller
             'store',
             'destroy',
             'update',
+            'dashboard',
         ]);
     }
 
@@ -153,6 +154,17 @@ class ShopController extends Controller
         $shop->delete();
         return response()->json([
             'msg' => 'ok'
+        ]);
+    }
+
+    public function dashboard()
+    {
+        $user_id = Auth::id();
+        $user = User::query()->find($user_id);
+        $shop = $user->shop;
+
+        return view('shop.manage.dashboard', [
+            'shop' => $shop
         ]);
     }
 }
