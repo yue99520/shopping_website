@@ -49,7 +49,7 @@ $(document).ready(function () {
             }
         }).then(function (response) {
             if (response.status === 204) {
-                // window.location = root;
+                window.location = root;
             } else if (response.status === 422){
                 showErrorMessage(
                     'login_error',
@@ -82,7 +82,7 @@ $(document).ready(function () {
             }
         }).then(function (response) {
             if (response.status === 204) {
-                // window.location = root;
+                window.location = root;
             } else if (response.status === 422){
                 showErrorMessage(
                     'register_error',
