@@ -13,8 +13,15 @@
         @else
             <div class="ui row">
                 <div class="ten wide column">
-                    <div class="ui segment">
-                        some basic shop information here
+                    <img class="ui small left floated image" src="{{ asset($shop->profile == null? asset('images/default_shop_profile.png') : $shop->profile) }}" alt="{{ $shop->title }}">
+                    <div class="ui huge header">
+                        {{ $shop->title }}
+                        <button id="edit_shop_button" class="ui right floated button" data-shop="{{ $shop->id }}"><i class="edit icon"></i>Edit</button>
+                    </div>
+                    <div class="text container">
+                        <div class="content">
+                            {{ $shop->description }}
+                        </div>
                     </div>
                 </div>
                 <div class="six wide column">

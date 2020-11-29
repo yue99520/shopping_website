@@ -25,6 +25,7 @@ class ShopController extends Controller
         $this->middleware('auth')->only([
             'store',
             'destroy',
+            'edit',
             'update',
             'dashboard',
         ]);
@@ -99,11 +100,16 @@ class ShopController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return Application|Factory|Response|View
      */
     public function edit($id)
     {
-        //
+        $user_id = Auth::id();
+        $shop = Shop::query()->where('user_id', $user_id)->findOrFail($id);
+
+        return view('shop.manage.edit', [
+            'shop' => $shop,
+        ]);
     }
 
     /**
