@@ -3,12 +3,17 @@
 @section('content')
     <div class="ui grid container">
         @if($shop == null)
-            <div class="ui placeholder segment">
-                <div class="ui icon header">
-                    <i class="shop icon"></i>
-                    You haven't create a shop.
+            <div class="ui two column centered row">
+                <div class="ui placeholder segment">
+                    <div class="ui icon header">
+                        <i class="shop icon"></i>
+                        Sorry, You don't have a shop yet.
+                    </div>
+                    <a class="ui primary button" href="{{ route('shop.create') }}">
+                        Create now!
+                        <i class="right arrow icon"></i>
+                    </a>
                 </div>
-                <div class="ui primary button">Create one!</div>
             </div>
         @else
             <div class="ui row">

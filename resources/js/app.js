@@ -141,4 +141,34 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#shop_create_form").submit(function (e) {
+        e.preventDefault();
+        let csrfToken = getFormCsrf();
+        let title = getFormFieldValue('title');
+        let description = getFormFieldValue('description');
+        let root = getRootDomain();
+
+        fetch(root + '/shop', {
+            method: 'POST',
+            body: JSON.stringify({
+                'title': title,
+                'description': description,
+            }),
+            headers: {
+                'X-CSRF_TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(function (response) {
+            if (response.status === 200) {
+                window.location = root + '/shop/dashboard';
+            } else if (response.status === 422){
+                showErrorMessage(
+                    'shop_create_error',
+                    'Create fail',
+                    'Invalid input content.')
+            }
+        });
+    });
 });

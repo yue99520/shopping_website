@@ -12,8 +12,10 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -26,6 +28,7 @@ class ShopController extends Controller
             'store',
             'destroy',
             'edit',
+            'create',
             'update',
             'dashboard',
         ]);
@@ -45,11 +48,21 @@ class ShopController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Application|RedirectResponse|Response|Redirector
      */
     public function create()
     {
-        //
+        $user_id = Auth::id();
+        $shop = Shop::query()->where('user_id', $user_id)->first();
+
+        if ($shop != null) {
+            return redirect(route('shop.dashboard'));
+        }
+
+        $user = User::query()->findOrFail($user_id);
+        return view('shop.manage.create', [
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -105,7 +118,11 @@ class ShopController extends Controller
     public function edit($id)
     {
         $user_id = Auth::id();
-        $shop = Shop::query()->where('user_id', $user_id)->findOrFail($id);
+        $shop = Shop::query()->where('user_id', $user_id)->find($id);
+
+        if ($shop == null) {
+            return redirect(route('shop.dashboard'));
+        }
 
         return view('shop.manage.edit', [
             'shop' => $shop,
