@@ -16,32 +16,11 @@
                 </div>
             </div>
         @else
-            <div class="ui row">
-                <div class="ten wide column">
-                    <img class="ui small left floated image" src="{{ asset($shop->profile == null? asset('images/default_shop_profile.png') : $shop->profile) }}" alt="{{ $shop->title }}">
-                    <div class="ui huge header">
-                        {{ $shop->title }}
-                        <button id="edit_shop_button" class="ui right floated button" data-shop="{{ $shop->id }}"><i class="edit icon"></i>Edit</button>
-                    </div>
-                    <div class="text container">
-                        <div class="content">
-                            {{ $shop->description }}
-                        </div>
-                    </div>
-                </div>
-                <div class="six wide column">
-                    <div class="ui segment">
-                        ten of the most popular commodities in this shop
-                    </div>
-                </div>
-            </div>
-            <div class="ui row">
-                <div class="sixteen wide column">
-                    <div class="ui segment">
-                        some cool graphic here
-                    </div>
-                </div>
-            </div>
+            @component('shop.detail', [
+                            'shop' => $shop,
+                            'manage_edit_button' => true
+                        ])
+            @endcomponent
         @endif
     </div>
 @endsection

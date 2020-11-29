@@ -15,7 +15,7 @@
             </div>
             <div class="field">
                 <label>Description</label>
-                <textarea rows="4" name="description">{{ $shop == null? : $shop->description }}</textarea>
+                <textarea rows="18" name="description">{{ $shop == null? : $shop->description }}</textarea>
             </div>
             <button class="ui blue button" type="submit">Submit</button>
         </form>

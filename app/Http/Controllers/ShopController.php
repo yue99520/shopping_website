@@ -106,7 +106,9 @@ class ShopController extends Controller
             return ResourceNotFoundError::response();
         }
 
-        return response()->json($shop);
+        return view('shop.show', [
+            'shop' => $shop
+        ]);
     }
 
     /**

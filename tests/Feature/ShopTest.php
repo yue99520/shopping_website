@@ -119,23 +119,6 @@ class ShopTest extends TestCase
         $this->assertEquals('Resource not found', $response->getContent());
     }
 
-    public function testCanShowShop()
-    {
-        $shop = factory(Shop::class)->create();
-        $shop->save();
-        $shop->refresh();
-
-        //show a shop
-        $response = $this->get(route('shop.show', [
-            'shop' => $shop->id
-        ]));
-
-        $shop = Shop::query()->find($shop->id);
-        $response
-            ->assertStatus(200)
-            ->assertJson($shop->toArray());
-    }
-
     public function testErrorResourceNotFoundWhileShowing()
     {
         $user = factory(User::class)->create();
