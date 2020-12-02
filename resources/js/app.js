@@ -100,7 +100,7 @@ $(document).ready(function () {
                 'Content-Type': 'application/json',
             }
         }).then(function (response) {
-            if (response.status === 204) {
+            if (response.status === 201) {
                 window.location = root;
             } else if (response.status === 422){
                 showErrorMessage(
