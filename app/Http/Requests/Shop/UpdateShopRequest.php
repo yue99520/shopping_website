@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Shop;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class UpdateShopRequest extends FormRequest
 {
@@ -24,7 +26,9 @@ class UpdateShopRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['unique:shops,title'],
+            'title' => [
+                Rule::unique('shops')->ignore(Auth::id(), 'user_id'),
+            ],
             'description' => []
         ];
     }

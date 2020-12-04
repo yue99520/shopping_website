@@ -3,7 +3,7 @@
         <img src="{{ asset($shop->profile == null? asset('images/default_shop_profile.png') : $shop->profile) }}" alt="{{ $shop->title }}">
     </div>
     <div class="content">
-        <a class="header">{{ $shop->title }}</a>
+        <a class="header" href="{{ route('shop.show', ['shop' => $shop->id]) }}">{{ $shop->title }}</a>
         <div class="meta">
             <span>something here</span>
         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Commodity;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCommodityRequest extends FormRequest
 {
@@ -23,8 +24,12 @@ class UpdateCommodityRequest extends FormRequest
      */
     public function rules()
     {
+        $commodity = $this->route('commodity');
+
         return [
-            'title' => ['required', 'unique:commodities,title']
+            'title' => [
+                Rule::unique('commodities')->ignore($commodity),
+            ]
         ];
     }
 }

@@ -29,7 +29,7 @@
                 HOME
             </div>
         </a>
-        <a class="item">
+        <a class="item" href="{{ route('shop.index') }}">
             Stores
         </a>
         <div class="right menu">
@@ -49,7 +49,7 @@
                 <div class="ui dropdown item">
                     <i class="user icon"></i>
                     <div class="menu">
-                        <div class="item">Something</div>
+                        <a class="item" href="{{ route('shop.dashboard') }}">My Store</a>
                         <div class="item">Something</div>
                         <div class="item">Something</div>
                         <div class="divider"></div>

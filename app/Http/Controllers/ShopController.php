@@ -12,8 +12,10 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -25,7 +27,10 @@ class ShopController extends Controller
         $this->middleware('auth')->only([
             'store',
             'destroy',
+            'edit',
+            'create',
             'update',
+            'dashboard',
         ]);
     }
 
@@ -43,11 +48,21 @@ class ShopController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Application|RedirectResponse|Response|Redirector
      */
     public function create()
     {
-        //
+        $user_id = Auth::id();
+        $shop = Shop::query()->where('user_id', $user_id)->first();
+
+        if ($shop != null) {
+            return redirect(route('shop.dashboard'));
+        }
+
+        $user = User::query()->findOrFail($user_id);
+        return view('shop.manage.create', [
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -91,18 +106,29 @@ class ShopController extends Controller
             return ResourceNotFoundError::response();
         }
 
-        return response()->json($shop);
+        return view('shop.show', [
+            'shop' => $shop
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return Application|Factory|Response|View
      */
     public function edit($id)
     {
-        //
+        $user_id = Auth::id();
+        $shop = Shop::query()->where('user_id', $user_id)->find($id);
+
+        if ($shop == null) {
+            return redirect(route('shop.dashboard'));
+        }
+
+        return view('shop.manage.edit', [
+            'shop' => $shop,
+        ]);
     }
 
     /**
@@ -153,6 +179,17 @@ class ShopController extends Controller
         $shop->delete();
         return response()->json([
             'msg' => 'ok'
+        ]);
+    }
+
+    public function dashboard()
+    {
+        $user_id = Auth::id();
+        $user = User::query()->find($user_id);
+        $shop = $user->shop;
+
+        return view('shop.manage.dashboard', [
+            'shop' => $shop
         ]);
     }
 }
