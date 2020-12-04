@@ -2,8 +2,8 @@
 
 @section('content')
     @guest
-        You are guest.
+        尚未登入
     @else
-        You are logged in.
+        已經登入
     @endguest
 @endsection

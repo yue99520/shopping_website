@@ -5,7 +5,7 @@
     <div class="middle aligned content">
         <a class="header">{{ $commodity->title }}</a>
         <div class="meta">
-            <span class="price">$1200</span>
+            <span class="price">價格 $1200</span>
         </div>
         <div class="description">
 

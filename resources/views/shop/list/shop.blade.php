@@ -11,7 +11,7 @@
             <p>{{ $shop->description }}</p>
         </div>
         <div class="extra">
-            Total {{ $shop->commodities()->get()->count() }} commodities
+            總共 {{ $shop->commodities()->get()->count() }} 項商品
         </div>
     </div>
 </div>

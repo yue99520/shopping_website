@@ -10,20 +10,20 @@
             @endif
         </div>
         <div class="description">
-            Total {{ $shop->commodities()->count() }} commodities
+            總共 {{ $shop->commodities()->count() }} 項商品
         </div>
         <div class="ui divider"></div>
         <div class="ui list">
             <div class="item">
                 <i class="ui user icon"></i>
                 <div class="content">
-                    Managed by: <a>{{ '@' . $shop->user->name }}</a>
+                    管理員： <a>{{ '@' . $shop->user->name }}</a>
                 </div>
             </div>
             <div class="item">
                 <i class="ui mail icon"></i>
                 <div class="content">
-                    Email: {{ $shop->user->email }}
+                    電子郵件： {{ $shop->user->email }}
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
 <div class="ui row">
     <div class="sixteen wide column">
         <div class="ui header">
-            About the brand
+            關於 {{ $shop->title }}
             <div class="ui divider"></div>
         </div>
         <div class="text container">

@@ -7,7 +7,7 @@
         <div class="ui row">
             <div class="sixteen wide column">
                 <div class="ui header">
-                    Commodities
+                    商品
                     <div class="ui divider"></div>
                 </div>
                 <div>

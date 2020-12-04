@@ -14,11 +14,11 @@
                     <form id="login_form" class="ui form">
                         @csrf
                         <div class="field">
-                            <label>Email</label>
+                            <label>電子郵件</label>
                             <input type="email" name="email" placeholder="user@gmail.com">
                         </div>
                         <div class="field">
-                            <label>Password</label>
+                            <label>密碼</label>
                             <input type="password" name="password" placeholder="**********">
                         </div>
                         <button class="ui blue button" type="submit">Login</button>

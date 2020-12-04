@@ -10,7 +10,7 @@
                         Sorry, You don't have a shop yet.
                     </div>
                     <a class="ui primary button" href="{{ route('shop.create') }}">
-                        Create now!
+                        開始經營商店！
                         <i class="right arrow icon"></i>
                     </a>
                 </div>

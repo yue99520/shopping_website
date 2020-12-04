@@ -14,19 +14,19 @@
                     <form id="register_form" class="ui form">
                         @csrf
                         <div class="field">
-                            <label>Username</label>
+                            <label>用戶名稱</label>
                             <input type="text" name="name" placeholder="Ernie12345">
                         </div>
                         <div class="field">
-                            <label>Email</label>
+                            <label>電子郵件</label>
                             <input type="email" name="email" placeholder="user@gmail.com">
                         </div>
                         <div class="field">
-                            <label>Password</label>
+                            <label>密碼</label>
                             <input type="password" name="password" placeholder="**********">
                         </div>
                         <div class="field">
-                            <label>Password Confirm</label>
+                            <label>密碼確認</label>
                             <input type="password" name="password_confirmation" placeholder="**********">
                         </div>
                         <button class="ui green button" type="submit">Register</button>
