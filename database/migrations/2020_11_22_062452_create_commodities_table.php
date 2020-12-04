@@ -16,6 +16,12 @@ class CreateCommoditiesTable extends Migration
         Schema::create('commodities', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('description', 5000);
+
+            $table->unsignedInteger('price');
+            $table->unsignedInteger('remaining_amount');
+            $table->unsignedInteger('sold_amount');
+            $table->string('unit_string');
 
             $table->unsignedBigInteger('shop_id')->nullable();
             $table->foreign('shop_id')->references('id')->on('shops');

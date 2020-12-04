@@ -3,15 +3,22 @@
         <img src="{{ asset($shop->profile == null? asset('images/default_shop_profile.png') : $shop->profile) }}" alt="{{ $shop->title }}">
     </div>
     <div class="content">
-        <a class="header" href="{{ route('shop.show', ['shop' => $shop->id]) }}">{{ $shop->title }}</a>
-        <div class="meta">
-            <span>something here</span>
-        </div>
+        <div class="ui huge header">{{ $shop->title }}</div>
         <div class="description">
             <p>{{ $shop->description }}</p>
         </div>
         <div class="extra">
-            總共 {{ $shop->commodities()->get()->count() }} 項商品
+            <div class="ui right floated meta">
+                <span>總共 {{ $shop->commodities()->get()->count() }} 項商品</span>
+            </div>
+        </div>
+        <div class="extra">
+            <a class="ui animated primary right floated button" href="{{ route('shop.show', ['shop' => $shop->id]) }}">
+                <div class="visible content">瀏覽更多</div>
+                <div class="hidden content">
+                    <i class="right arrow icon"></i>
+                </div>
+            </a>
         </div>
     </div>
 </div>

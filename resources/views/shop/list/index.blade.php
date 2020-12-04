@@ -5,7 +5,7 @@
         <div class="ui huge header">
             商店列表
         </div>
-        <div class="ui items">
+        <div class="ui divided items">
             @foreach($shops as $shop)
                 @component('shop.list.shop', ['shop' => $shop])
                 @endcomponent

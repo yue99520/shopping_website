@@ -10,14 +10,8 @@
                     商品
                     <div class="ui divider"></div>
                 </div>
-                <div>
-                    <div class="ui items">
-                        @foreach($shop->commodities as $commodity)
-                            @component('commodity.list.commodity', ['commodity' => $commodity])
-                            @endcomponent
-                        @endforeach
-                    </div>
-                </div>
+                @component('commodity.list.commodities', ['shop' => $shop])
+                @endcomponent
             </div>
         </div>
     </div>

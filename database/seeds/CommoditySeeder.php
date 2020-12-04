@@ -1,6 +1,7 @@
 <?php
 
 use App\Commodity;
+use App\Shop;
 use Illuminate\Database\Seeder;
 
 class CommoditySeeder extends Seeder
@@ -12,8 +13,10 @@ class CommoditySeeder extends Seeder
      */
     public function run()
     {
-        $commodities = factory(Commodity::class, 10)->create();
-        $shop = \App\Shop::query()->first();
-        $shop->commodities()->saveMany($commodities);
+        $shops = Shop::query()->get();
+        foreach ($shops as $shop) {
+            $commodities = factory(Commodity::class, random_int(5, 15))->create();
+            $shop->commodities()->saveMany($commodities);
+        }
     }
 }
