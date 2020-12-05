@@ -19,6 +19,7 @@
         src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
         crossorigin="anonymous"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="{{ asset('semantic-dist/semantic.js') }}"></script>
 </head>
 <body>
@@ -33,6 +34,10 @@
             Stores
         </a>
         <div class="right menu">
+            <a class="item label">
+                <i class="ui shop icon"></i>
+                <div id="cart_amount">123</div>
+            </a>
             <div class="item">
                 <div class="ui input">
                     <input type="text" placeholder="Search..." >
@@ -67,4 +72,22 @@
     @yield('content')
 </div>
 </body>
+<script>
+    function updateCartAmount() {
+        let cart = $.cookie('cart');
+        if (cart === undefined || cart === null) {
+            $('#cart_amount').html(0);
+        } else {
+            cart = JSON.parse(cart);
+            let count = 0;
+            for (let i = 0; i < cart.length; i++) {
+                count = count + cart[i].amount;
+            }
+            $('#cart_amount').html(count);
+        }
+    }
+    $(document).ready(function () {
+        updateCartAmount();
+    });
+</script>
 </html>

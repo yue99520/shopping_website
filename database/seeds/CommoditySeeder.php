@@ -15,6 +15,10 @@ class CommoditySeeder extends Seeder
     {
         $shops = Shop::query()->get();
         foreach ($shops as $shop) {
+            $commodity = factory(Commodity::class)->create();
+            $commodity->remaining_amount = 0;
+            $shop->commodities()->save($commodity);
+
             $commodities = factory(Commodity::class, random_int(5, 15))->create();
             $shop->commodities()->saveMany($commodities);
         }
