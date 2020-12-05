@@ -34,10 +34,31 @@
             Stores
         </a>
         <div class="right menu">
-            <a class="item label">
+            <a id="shopping_cart" class="item label">
                 <i class="ui shop icon"></i>
-                <div id="cart_amount">123</div>
+                <div id="cart_amount"></div>
             </a>
+            <div class="ui flowing popup bottom center transition hidden">
+                <div class="ui small header">購物車
+                    <button class="ui very basic right floated tiny button" onclick="clearCart()">清空</button>
+                </div>
+                <div class="ui segment">
+                    <table class="ui very basic table">
+                        <thead>
+                            <tr>
+                                <th>商品名稱</th>
+                                <th>數量</th>
+                                <th class="right aligned">總計</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart_preview_tbody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ui extra">
+                    <button class="ui green tiny right floated button">去結帳</button>
+                </div>
+            </div>
             <div class="item">
                 <div class="ui input">
                     <input type="text" placeholder="Search..." >
@@ -72,6 +93,13 @@
     @yield('content')
 </div>
 </body>
+<template id="cart_preview_tbody_template">
+    <tr>
+        <td id="cart_preview_tbody_title"></td>
+        <td id="cart_preview_tbody_amount"></td>
+        <td id="cart_preview_tbody_total" class="right aligned"></td>
+    </tr>
+</template>
 <script>
     function updateCartAmount() {
         let cart = $.cookie('cart');
@@ -86,8 +114,74 @@
             $('#cart_amount').html(count);
         }
     }
+
+    function getCartPreviewTbodyTemplate() {
+        let html = $("#cart_preview_tbody_template").html();
+        return $(html).clone();
+    }
+
+    function clearCart() {
+        let cart = [];
+        $.cookie('cart', JSON.stringify(cart), {
+            expires: 60,
+            path: '/'
+        });
+
+        updateCartAmount();
+        updateCartPreviewContent();
+    }
+
+    function updateCartPreviewContent() {
+        function getPreviewString(str, max) {
+            if (str.length > max) {
+                return str.substr(0, max) + '...';
+            }
+            return str;
+        }
+
+        let cart = $.cookie('cart');
+        if (cart === undefined || cart === null) {
+            cart = [];
+        } else {
+            cart = JSON.parse(cart);
+        }
+
+        let template = getCartPreviewTbodyTemplate();
+
+        let html = '';
+        let total = 0;
+        $.each(cart, function (key, ele) {
+            let temp_total = ele.price * ele.amount;
+            total += temp_total;
+
+            template.find('#cart_preview_tbody_title').text(getPreviewString(ele.title, 20));
+            template.find('#cart_preview_tbody_amount').text(ele.amount);
+            template.find('#cart_preview_tbody_total').text(temp_total + ' 元');
+
+            html += template[0].outerHTML;
+        });
+
+        template.find('#cart_preview_tbody_title').text('');
+        template.find('#cart_preview_tbody_amount').text('');
+        template.find('#cart_preview_tbody_total').text('小計： ' + total + ' 元');
+
+        html += template[0].outerHTML;
+
+        $('#cart_preview_tbody').html(html);
+    }
+
     $(document).ready(function () {
         updateCartAmount();
+
+        $('#shopping_cart').click(function () {
+            updateCartPreviewContent();
+        });
+
+        $('#shopping_cart')
+            .popup({
+                on: 'click'
+            })
+        ;
     });
 </script>
 </html>

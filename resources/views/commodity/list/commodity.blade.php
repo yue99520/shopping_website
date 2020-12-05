@@ -20,7 +20,7 @@
             <div class="ui small right floated buttons">
                 <div id="add_to_cart_button"
                      class="ui animated basic green {{ $commodity->remaining_amount == 0 ? 'disabled' : '' }} button"
-                     onclick="addCommodityToCart({{ $commodity->id }});"
+                     onclick="addCommodityToCart({{ $commodity->id }}, '{{ $commodity->title }}', {{ $commodity->price }});"
                      data-content="已加入 1 項商品至購物車">
                     <div class="visible content">
                         <i class="plus icon"></i>

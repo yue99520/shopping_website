@@ -1,5 +1,5 @@
 <script>
-    function addCommodityToCart(commodity_id) {
+    function addCommodityToCart(commodity_id, commodity_title, commodity_price) {
         let cart = $.cookie('cart');
 
         if (cart === undefined || cart === null) {
@@ -20,6 +20,8 @@
         if (! found_commodity) {
             cart.push({
                 id: commodity_id,
+                title: commodity_title,
+                price: commodity_price,
                 amount: 1,
             });
         }
@@ -32,9 +34,9 @@
         updateCartAmount();
     }
 
-    $(document).ready(function () {
-
-    });
+    // $(document).ready(function () {
+    //
+    // });
 </script>
 <div class="ui divided items">
     @foreach($shop->commodities as $commodity)

@@ -30,7 +30,9 @@ $(document).ready(function () {
     ;
 
     $('.activating.element')
-        .popup()
+        .popup({
+            on: 'click'
+        })
     ;
 
     $('#edit_shop_button').click(function () {
