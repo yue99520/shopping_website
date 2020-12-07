@@ -13,10 +13,11 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ShopController extends Controller
@@ -87,7 +88,12 @@ class ShopController extends Controller
         $shop->user_id = $user_id;
         $shop->title = $data['title'];
         $shop->description = $data['description'];
+        $shop->image = null;
         $shop->save();
+
+        if (isset($data['image'])) {
+            $this->updateImage($shop, $data['image']);
+        }
 
         return response()->json($shop);
     }
@@ -155,7 +161,13 @@ class ShopController extends Controller
         if (isset($data['description'])) {
             $shop->description = $data['description'];
         }
+
         $shop->save();
+
+        if (isset($data['image'])) {
+            $this->updateImage($shop, $data['image']);
+        }
+
         return response()->json($shop->toArray());
     }
 
@@ -191,5 +203,22 @@ class ShopController extends Controller
         return view('shop.manage.dashboard', [
             'shop' => $shop
         ]);
+    }
+
+    private function updateImage(Shop $shop, UploadedFile $image)
+    {
+        $path = '/shop/';
+        $fileSystem = Storage::disk('public');
+        $fileSystem->makeDirectory('/shop');
+
+        if ($fileSystem->put($path, $image)) {
+
+            if ($fileSystem->exists($shop->image)) {
+                $fileSystem->delete($shop->image);
+            }
+
+            $shop->image = $path . $image->hashName();
+            $shop->save();
+        }
     }
 }

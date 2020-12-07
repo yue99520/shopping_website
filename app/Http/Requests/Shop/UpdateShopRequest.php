@@ -29,7 +29,8 @@ class UpdateShopRequest extends FormRequest
             'title' => [
                 Rule::unique('shops')->ignore(Auth::id(), 'user_id'),
             ],
-            'description' => []
+            'description' => ['string'],
+            'image' => ['mimes:png,jpg,jpeg,JPEG,JPG']
         ];
     }
 }

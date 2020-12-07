@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Shop;
 use App\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ShopTest extends TestCase
@@ -20,12 +22,40 @@ class ShopTest extends TestCase
         $response = $this->post(route('shop.store'), [
             'title' => $title,
             'description' => $description,
+        ], [
+            'Accept' => 'application/json'
         ]);
 
         $shop = Shop::query()->where('title', $title)->first();
         $response
             ->assertStatus(200)
             ->assertJson($shop->toArray());
+    }
+
+    public function testCanCreateShopWithImage()
+    {
+        $user = factory(User::class)->create();
+        $user->save();
+        $this->actingAs($user);
+        $this->assertDatabaseHas('users', $user->toArray());
+
+        $title = 'My test shop name 123';
+        $description = 'some description thing';
+        $response = $this->post(route('shop.store'), [
+            'title' => $title,
+            'description' => $description,
+            'image' => UploadedFile::fake()->image('fake.jpg'),
+        ], [
+            'Accept' => 'application/json'
+        ]);
+
+        $shop = Shop::query()->where('title', $title)->first();
+        $response
+            ->assertStatus(200)
+            ->assertJson($shop->toArray());
+
+        Storage::disk('public')->assertExists($response->json('image'));
+        Storage::disk('public')->delete($response->json('image'));
     }
 
     public function testErrorResourceAlreadyExistWhileCreating()
@@ -67,6 +97,34 @@ class ShopTest extends TestCase
             ->assertStatus(200)
             ->assertJson($shop->toArray());
         $this->assertEquals($old_title . 'withTest123', $shop->title);
+    }
+
+    public function testCanUpdateShopWithImage()
+    {
+        $shop = factory(Shop::class)->create();
+        $shop->save();
+        $shop->refresh();
+        $user = $shop->user;
+        $this->actingAs($user);
+
+
+        $old_title = $shop->title;
+        $response = $this->patch(route('shop.update', [
+            'shop' => $shop->id
+        ]), [
+            'title' => $old_title . 'withTest123',
+            'image' => UploadedFile::fake()->image('fake.jpg'),
+        ]);
+
+        $shop = Shop::query()->find($shop->id);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson($shop->toArray());
+        $this->assertEquals($old_title . 'withTest123', $shop->title);
+
+        Storage::disk('public')->assertExists($response->json('image'));
+        Storage::disk('public')->delete($response->json('image'));
     }
 
     public function testErrorResourceNotFoundWhileUpdating()

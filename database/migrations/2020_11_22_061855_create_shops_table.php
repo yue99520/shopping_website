@@ -17,6 +17,7 @@ class CreateShopsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('description', 2000);
+            $table->string('image')->nullable();
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
