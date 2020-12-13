@@ -38,6 +38,12 @@ $(document).ready(function () {
         .dropdown()
     ;
 
+    $('.activating.element')
+        .popup({
+            on: 'click'
+        })
+    ;
+
     $('#edit_shop_button').click(function () {
         let root = getRootDomain();
         let shop = $('#edit_shop_button').data('shop');

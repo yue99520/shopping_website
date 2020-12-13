@@ -22,6 +22,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/shop/dashboard', 'ShopController@dashboard')->name('shop.dashboard');
+Route::get('/cart', 'CartController@index')->name('cart');
+
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', 'CartController@index')->name('index');
+});
 
 Route::resources([
     'shop' => 'ShopController',
