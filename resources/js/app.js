@@ -7,6 +7,15 @@ function showErrorMessage(message_id, header, content) {
     message.removeAttr('hidden');
 }
 
+function getFormImageInputUrl(name) {
+    let url = $('input[name="' + name + '"]').data('image');
+    return (url === undefined || url === null || url.length === 0) ? null : url;
+}
+
+function setFormImageInputUrl(name, url) {
+    $('input[name="' + name + '"]').data('image', url);
+}
+
 function getFormFieldValue(name) {
     //semantic ui api
     return $('.ui.form').form('get field', name).val();
@@ -117,6 +126,7 @@ $(document).ready(function () {
         let shop = $('input[name="shop_id"]').attr('value');
         let title = getFormFieldValue('title');
         let description = getFormFieldValue('description');
+        let image = getFormImageInputUrl('image');
         let root = getRootDomain();
 
         fetch(root + '/shop/' + shop, {
@@ -124,6 +134,7 @@ $(document).ready(function () {
             body: JSON.stringify({
                 'title': title,
                 'description': description,
+                'image': image,
             }),
             headers: {
                 'X-CSRF_TOKEN': csrfToken,
@@ -147,6 +158,7 @@ $(document).ready(function () {
         let csrfToken = getFormCsrf();
         let title = getFormFieldValue('title');
         let description = getFormFieldValue('description');
+        let image = getFormImageInputUrl('image');
         let root = getRootDomain();
 
         fetch(root + '/shop', {
@@ -154,6 +166,7 @@ $(document).ready(function () {
             body: JSON.stringify({
                 'title': title,
                 'description': description,
+                'image': image,
             }),
             headers: {
                 'X-CSRF_TOKEN': csrfToken,
@@ -170,5 +183,39 @@ $(document).ready(function () {
                     'Invalid input content.')
             }
         });
+    });
+
+    $('#image_input').change(function (event) {
+        let csrfToken = getFormCsrf();
+        let root = getRootDomain();
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file)
+
+        fetch(root + '/image', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF_TOKEN': csrfToken,
+                'Accept': 'application/json',
+            }
+        })
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                let url = '/storage' + data.url;
+                console.log(url)
+                $('#image_input_preview').attr('src', url);
+                setFormImageInputUrl('image', url)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     });
 });

@@ -28,3 +28,4 @@ Route::resources([
     'commodity' => 'CommodityController',
 ]);
 
+Route::post('/image', 'ImageController@store')->name('image.store');

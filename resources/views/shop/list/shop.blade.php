@@ -1,6 +1,6 @@
 <div class="item">
     <div class="image">
-        <img src="{{ asset($shop->profile == null? asset('images/default_shop_profile.png') : $shop->profile) }}" alt="{{ $shop->title }}">
+        <img src="{{ asset($shop->image == null? asset('images/default_shop_profile.png') : $shop->image) }}" alt="{{ $shop->title }}">
     </div>
     <div class="content">
         <div class="ui huge header">{{ $shop->title }}</div>

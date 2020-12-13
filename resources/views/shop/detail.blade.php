@@ -1,6 +1,6 @@
 <div class="ui row">
     <div class="three wide column">
-        <img class="ui fluid image" src="{{ $shop->profile == null? asset('images/default_shop_profile.png') : asset($shop->profile) }}" alt="{{ $shop->title }}">
+        <img class="ui fluid image" src="{{ $shop->image == null? asset('images/default_shop_profile.png') : $shop->image }}" alt="{{ $shop->title }}">
     </div>
     <div class="thirteen wide column">
         <div class="ui huge header">

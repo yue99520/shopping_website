@@ -6,6 +6,7 @@ use App\Http\ErrorResponses\ResourceAlreadyExistError;
 use App\Http\ErrorResponses\ResourceNotFoundError;
 use App\Http\Requests\Shop\StoreShopRequest;
 use App\Http\Requests\Shop\UpdateShopRequest;
+use App\Http\Requests\Shop\UploadShopImageRequest;
 use App\Shop;
 use App\User;
 use Illuminate\Contracts\Foundation\Application;
@@ -13,7 +14,6 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +87,7 @@ class ShopController extends Controller
         $shop->user_id = $user_id;
         $shop->title = $data['title'];
         $shop->description = $data['description'];
+        $shop->image = $data['image'];
         $shop->save();
 
         return response()->json($shop);
@@ -148,14 +149,20 @@ class ShopController extends Controller
             return ResourceNotFoundError::response();
         }
 
-        if (isset($data['title'])) {
+        if ($data['title']) {
             $shop->title = $data['title'];
         }
 
-        if (isset($data['description'])) {
+        if ($data['description']) {
             $shop->description = $data['description'];
         }
+
+        if (isset($data['image'])) {
+            $shop->image = $data['image'];
+        }
+
         $shop->save();
+
         return response()->json($shop->toArray());
     }
 

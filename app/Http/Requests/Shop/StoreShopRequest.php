@@ -25,7 +25,8 @@ class StoreShopRequest extends FormRequest
     {
         return [
             'title' => ['required', 'unique:shops,title'],
-            'description' => ['required']
+            'description' => ['required'],
+            'image' => ['required', 'string', 'nullable'],
         ];
     }
 }
