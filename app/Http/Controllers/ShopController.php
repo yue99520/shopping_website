@@ -6,6 +6,7 @@ use App\Http\ErrorResponses\ResourceAlreadyExistError;
 use App\Http\ErrorResponses\ResourceNotFoundError;
 use App\Http\Requests\Shop\StoreShopRequest;
 use App\Http\Requests\Shop\UpdateShopRequest;
+use App\Http\Requests\Shop\UploadShopImageRequest;
 use App\Shop;
 use App\User;
 use Illuminate\Contracts\Foundation\Application;
@@ -14,10 +15,8 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ShopController extends Controller
@@ -88,12 +87,8 @@ class ShopController extends Controller
         $shop->user_id = $user_id;
         $shop->title = $data['title'];
         $shop->description = $data['description'];
-        $shop->image = null;
+        $shop->image = $data['image'];
         $shop->save();
-
-        if (isset($data['image'])) {
-            $this->updateImage($shop, $data['image']);
-        }
 
         return response()->json($shop);
     }
@@ -154,19 +149,19 @@ class ShopController extends Controller
             return ResourceNotFoundError::response();
         }
 
-        if (isset($data['title'])) {
+        if ($data['title']) {
             $shop->title = $data['title'];
         }
 
-        if (isset($data['description'])) {
+        if ($data['description']) {
             $shop->description = $data['description'];
         }
 
-        $shop->save();
-
         if (isset($data['image'])) {
-            $this->updateImage($shop, $data['image']);
+            $shop->image = $data['image'];
         }
+
+        $shop->save();
 
         return response()->json($shop->toArray());
     }
@@ -203,22 +198,5 @@ class ShopController extends Controller
         return view('shop.manage.dashboard', [
             'shop' => $shop
         ]);
-    }
-
-    private function updateImage(Shop $shop, UploadedFile $image)
-    {
-        $path = '/shop/';
-        $fileSystem = Storage::disk('public');
-        $fileSystem->makeDirectory('/shop');
-
-        if ($fileSystem->put($path, $image)) {
-
-            if ($fileSystem->exists($shop->image)) {
-                $fileSystem->delete($shop->image);
-            }
-
-            $shop->image = $path . $image->hashName();
-            $shop->save();
-        }
     }
 }
